@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Plan - Disaster Preparedness</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Emergency Plan</h1>
+            <p>Create your personalized safety plan</p>
+            <p><a href="dashboard.html">← Back to Dashboard</a></p>
+        </header>
+
+        <div class="form-container">
+            <form id="emergencyPlanForm">
+                <h3>Family/Emergency Contacts</h3>
+                <div class="form-group">
+                    <label>Primary Contact Name</label>
+                    <input type="text" id="contact1Name" placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <label>Primary Contact Phone</label>
+                    <input type="tel" id="contact1Phone" placeholder="Phone number">
+                </div>
+
+                <h3>Meeting Places</h3>
+                <div class="form-group">
+                    <label>Indoor Meeting Place</label>
+                    <input type="text" id="meetingIndoor" placeholder="e.g., Basement, Interior room">
+                </div>
+                <div class="form-group">
+                    <label>Outdoor Meeting Place</label>
+                    <input type="text" id="meetingOutdoor" placeholder="e.g., Neighborhood park">
+                </div>
+
+                <h3>Emergency Kit Checklist</h3>
+                <div style="text-align: left;">
+                    <label><input type="checkbox" id="water"> Water (1 gallon per person per day)</label><br>
+                    <label><input type="checkbox" id="food"> Non-perishable food (3-day supply)</label><br>
+                    <label><input type="checkbox" id="firstaid"> First aid kit</label><br>
+                    <label><input type="checkbox" id="flashlight"> Flashlight with batteries</label><br>
+                    <label><input type="checkbox" id="radio"> Battery-powered radio</label><br>
+                    <label><input type="checkbox" id="documents"> Important documents copies</label>
+                </div>
+
+                <button type="submit" class="btn" style="margin-top: 20px;">Save Emergency Plan</button>
+            </form>
+        </div>
+
+        <div id="savedPlan" style="display: none; margin-top: 30px;">
+            <div class="simulation-scene">
+                <h2>Your Emergency Plan</h2>
+                <div id="planDetails"></div>
+                <button onclick="editPlan()" class="btn">Edit Plan</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('emergencyPlanForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const plan = {
+                contact1Name: document.getElementById('contact1Name').value,
+                contact1Phone: document.getElementById('contact1Phone').value,
+                meetingIndoor: document.getElementById('meetingIndoor').value,
+                meetingOutdoor: document.getElementById('meetingOutdoor').value,
+                kitItems: {
+                    water: document.getElementById('water').checked,
+                    food: document.getElementById('food').checked,
+                    firstaid: document.getElementById('firstaid').checked,
+                    flashlight: document.getElementById('flashlight').checked,
+                    radio: document.getElementById('radio').checked,
+                    documents: document.getElementById('documents').checked
+                },
+                createdAt: new Date().toLocaleString()
+            };
+
+            localStorage.setItem('emergencyPlan', JSON.stringify(plan));
+            displayPlan(plan);
+        });
+
+        function displayPlan(plan) {
+            document.getElementById('emergencyPlanForm').style.display = 'none';
+            document.getElementById('savedPlan').style.display = 'block';
+            
+            const completedItems = Object.values(plan.kitItems).filter(item => item).length;
+            const totalItems = Object.keys(plan.kitItems).length;
+            
+            document.getElementById('planDetails').innerHTML = `
+                <h3>Emergency Contacts:</h3>
+                <p><strong>Primary Contact:</strong> ${plan.contact1Name} - ${plan.contact1Phone}</p>
+                
+                <h3>Meeting Places:</h3>
+                <p><strong>Indoor:</strong> ${plan.meetingIndoor}</p>
+                <p><strong>Outdoor:</strong> ${plan.meetingOutdoor}</p>
+                
+                <h3>Emergency Kit Progress:</h3>
+                <p>${completedItems} out of ${totalItems} items prepared</p>
+                <div style="background: #ecf0f1; height: 20px; border-radius: 10px; margin: 10px 0;">
+                    <div style="background: #27ae60; height: 100%; width: ${(completedItems/totalItems)*100}%; border-radius: 10px;"></div>
+                </div>
+                
+                <p><em>Plan created: ${plan.createdAt}</em></p>
+            `;
+        }
+
+        function editPlan() {
+            document.getElementById('emergencyPlanForm').style.display = 'block';
+            document.getElementById('savedPlan').style.display = 'none';
+        }
+
+        // Load existing plan on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedPlan = localStorage.getItem('emergencyPlan');
+            if (savedPlan) {
+                displayPlan(JSON.parse(savedPlan));
+            }
+        });
+    </script>
+</body>
+</html>

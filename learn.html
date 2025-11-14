@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Safety - Disaster Preparedness</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Learn Safety</h1>
+            <p>Educational resources for disaster preparedness</p>
+            <p><a href="dashboard.html">← Back to Dashboard</a></p>
+        </header>
+
+        <div class="dashboard">
+            <div class="dashboard-card" onclick="showCourse('earthquake')">
+                <h3>🌋 Earthquake Safety</h3>
+                <p>Learn how to prepare and respond to earthquakes</p>
+            </div>
+
+            <div class="dashboard-card" onclick="showCourse('fire')">
+                <h3>🔥 Fire Safety</h3>
+                <p>Fire prevention and evacuation procedures</p>
+            </div>
+
+            <div class="dashboard-card" onclick="showCourse('flood')">
+                <h3>💧 Flood Safety</h3>
+                <p>Dealing with floods and water emergencies</p>
+            </div>
+
+            <div class="dashboard-card" onclick="showCourse('firstaid')">
+                <h3>🩹 First Aid Basics</h3>
+                <p>Essential medical emergency response</p>
+            </div>
+        </div>
+
+        <div id="courseContent" style="display: none; margin-top: 30px;">
+            <div class="simulation-scene">
+                <h2 id="courseTitle">Course Title</h2>
+                <div id="courseMaterial">
+                    <!-- Course content will be loaded here -->
+                </div>
+                <button onclick="hideCourse()" class="btn">Back to Courses</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showCourse(type) {
+            const courses = {
+                earthquake: {
+                    title: "Earthquake Safety Guide",
+                    content: `
+                        <h3>Before an Earthquake:</h3>
+                        <ul>
+                            <li>Secure heavy furniture to walls</li>
+                            <li>Prepare an emergency kit with water, food, and first aid</li>
+                            <li>Identify safe spots in each room</li>
+                            <li>Practice "Drop, Cover, and Hold On"</li>
+                        </ul>
+                        
+                        <h3>During an Earthquake:</h3>
+                        <ul>
+                            <li>DROP to the ground</li>
+                            <li>COVER under sturdy furniture</li>
+                            <li>HOLD ON until shaking stops</li>
+                            <li>Stay away from windows and heavy objects</li>
+                        </ul>
+                        
+                        <h3>After an Earthquake:</h3>
+                        <ul>
+                            <li>Check for injuries and provide first aid</li>
+                            <li>Inspect for gas leaks and fires</li>
+                            <li>Listen to emergency broadcasts</li>
+                            <li>Be prepared for aftershocks</li>
+                        </ul>
+                    `
+                },
+                fire: {
+                    title: "Fire Safety Procedures",
+                    content: `
+                        <h3>Fire Prevention:</h3>
+                        <ul>
+                            <li>Install smoke detectors on every level</li>
+                            <li>Keep fire extinguishers accessible</li>
+                            <li>Never leave cooking unattended</li>
+                            <li>Maintain electrical safety</li>
+                        </ul>
+                        
+                        <h3>During a Fire:</h3>
+                        <ul>
+                            <li>Alert everyone and call emergency services</li>
+                            <li>Use appropriate fire extinguisher if safe</li>
+                            <li>Stay low to avoid smoke inhalation</li>
+                            <li>Feel doors before opening - if hot, use another exit</li>
+                        </ul>
+                        
+                        <h3>Evacuation:</h3>
+                        <ul>
+                            <li>Know two ways out of every room</li>
+                            <li>Designate a meeting point outside</li>
+                            <li>Never use elevators during fires</li>
+                            <li>Close doors behind you to slow fire spread</li>
+                        </ul>
+                    `
+                }
+            };
+
+            const course = courses[type];
+            if (course) {
+                document.getElementById('courseTitle').textContent = course.title;
+                document.getElementById('courseMaterial').innerHTML = course.content;
+                document.querySelector('.dashboard').style.display = 'none';
+                document.getElementById('courseContent').style.display = 'block';
+            }
+        }
+
+        function hideCourse() {
+            document.querySelector('.dashboard').style.display = 'grid';
+            document.getElementById('courseContent').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
